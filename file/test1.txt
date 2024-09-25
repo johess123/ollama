@@ -1,0 +1,13 @@
+國立暨南國際大學 資訊管理學系學士班必選修科目一覽
+最低畢業學分: 128 學分,包含全校共同課程 15 學分、通識領域課程 16 學分、院本必修 15 學分、系必修 30 學分、至少完成一個次領域選修共 24 學分、系專業選修 12 學分、自由選修 16 學分，通識講座畢業前至少應出席6場。
+全校共同課程(必修15學分)：包含共同課程與共同選修課程
+共同課程：英文一(上) English I(1) 2學分、英文一(下) English I(2) 2學分、英文二 English II 2 學分、中文思辨與表達一:閱讀書寫 Critical Thinking and Expression in Chinese (I):Reading And Writing 2學分、中文思辨與表達二:多元應用 Critical Thinking and Expression in Chinese(II):Multiple Applications 2學分、社會服務學習(上) Service Learning(1) 1學分、社會服務學習(下) Service Learning(2) 1學分、大一體育(上)Physical Education (1) 0.5 學分、大一體育(下)Physical Education (2) 0.5學分、特色運動 (Featured Sports) 2學分
+共同選修課程：第二外語 Second Foreign Language、東南亞語言 Southeast Asia Languages、進階語文 Advanced English、其他選修 Other Elective Course
+通識領域課程(至少16學分)：包含人文領域、社會領域、自然領域、特色通識領域
+學系專業課程：包含基礎院本必修課程、學系必修專業課程、次領域專業選修課程
+基礎院本必修課程 (15學分)：會計學及實習(一) Financial Accounting(1) 3學分、管理學 Management 3學分、經濟學及實習(上) Economics (1) 3學分、程式設計(上) Programming (1) 3學分、統計學及實習(上) Statistics (I) 3學分
+學系必修專業課程 (30學分)：微積分及實習(上) Calculus (I) 3學分、程式設計(下) Programming (2) 3學分、計算機概論 Introduction to Computer 3學分、資料結構與演算法(上) Data Structures and Algorithms (1) 3學分、管理資訊系統 Management Information System 3學分、資料庫管理系統 Data Base Management System 3學分、系統分析與設計 System Analysis and Design 3學分、企業資訊通訊與網路 Enterprise Communication Networks 3學分、資訊管理專題與個案(上) Project(I) 3學分、資訊管理專題與個案(下) Project(II) 3學分
+次領域專業選修課程 (至少完成一個次領域的8門課，共24學分)：包含資訊技術與系統開發次領域、資訊管理與決策科學次領域
+資訊技術與系統開發次領域：微積分及實習(下) Calculus (II) 3學分、計算機組織 Computer Organization 3學分、資料結構與演算法(下) Data Structures and Algorithms (2) 3學分、系統程式 System Programming 3學分、資訊系統開發與實務(一) Practicum for Information Systems(1) 3學分、3D數位內容與應用 3D Digital Contents and Applications 3學分、Android App 程式設計 Android App Programming Design 3學分、軟體工程 Software Engineering 3學分、作業系統 Operating Systems 3學分、網頁程式設計 Web Programming 3學分、資訊安全管理與技術 Information Security management and Technology 3學分、作業系統設計與實作 Operating System Design and Implementation 3學分、Linux 系統管理實務(一,入門) Practical Linux System Administration - Level I, Basic 3學分
+資訊管理與決策科學次領域：微積分及實習(下) Calculus (II) 3學分、統計學及實習(下) Statistics (II) 3學分、財務管理 Financial Management 3學分、人因與人機介面 Human Factors and Human Machine Interface 3學分、資料視覺化 Data Visualization 3學分、作業研究 Operations Research 3學分、組織行為 Organization Behavior 3學分、決策支援系統 Decision Support Systems 3學分、生產與作業管理 Production and Operation Management 3學分、行銷管理 Marketing Management 3學分、系統思考與系統動態學 Introduction to Systems Thinking and System Dynamics 3學分、管理會計系統 Management Accounting System 3學分、資料探勘與企業智慧 Data Mining and Busiess Intelligence 3學分
+系專業選修課程 (12學分)：資訊科技與服務科學 Information Technology and Service Science 3學分、科技管理 Management of Technology 3學分、職涯成功密碼 The Secret Code of Career Planning 1學分、資訊管理專題與個案(三) Project(III) 3學分、會計學及實習(下) Financial Accounting(2) 3學分

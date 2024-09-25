@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-icon { /*聊天按鈕圖示*/
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .chat-window { /*聊天視窗*/
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 450px;
+            height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            background-color: white;
+        }
+        .chat-window.active {
+            display: flex;
+            flex-direction: row;
+        }
+        .chat-sidebar { /*左側*/
+            width: 120px;
+            background-color: #f1f1f1;
+            border-right: 1px solid #ccc;
+            overflow-y: auto;
+            font-size: 15px;
+        }
+        .chat-sidebar-item { /*聊天記錄欄*/
+            padding: 15px;
+            cursor: pointer;
+        }
+        .chat-sidebar-item:hover {
+            background-color: #ddd;
+        }
+        .new-chat {
+            padding: 15px;
+            cursor: pointer;
+        }
+        .new-chat:hover {
+            background-color: #ddd;
+        }
+        .chat-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages-div {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            width: 330px;
+            height: 460px;
+            /* padding: 10px; */
+        }
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+        }
+        .user, .assistant, .upload-file-message {
+            /*display: flex;  設置為 inline-block，使寬度適應內容 */
+            padding: 10px;
+            border-radius: 10px; /* 圓角邊框 */
+            margin-top: 10px;
+            margin-bottom: 10px;
+            max-width: 60%; /* 訊息框最大寬度 */
+            word-wrap: break-word; /* 自動換行 */
+        }
+        .user {
+            align-self: flex-end; /* 將user訊息移動到右邊 */
+            background-color: #007bff;
+            color: white;
+            text-align: right;
+            margin-left: auto;
+            margin-right: 10px; /* 與右邊界的距離 */
+        }
+        .assistant {
+            align-self: flex-start; /* 將assistant訊息移動到左邊 */
+            background-color: #f4f4f4;
+            text-align: left;
+            margin-left: 10px; /* 與左邊界的距離 */
+        }
+        .upload-file-message {
+            flex-wrap: nowrap;
+            align-self: flex-end; /* 將assistant訊息移動到左邊 */
+            text-align: right;
+            margin-left: auto;
+            margin-right: 10px; /* 與右邊界的距離 */
+            background-color: #f4f4f4;
+            display: none;
+            align-items: center;
+            font-weight: bold;
+        }
+        .upload-file-icon {
+            background-color: #ff00a6;
+            color: white;
+            padding: 10px;
+            border-radius: 10px; /* 圓角邊框 */
+        }
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+            /* height: 40px; */
+            align-items: center;
+        }
+        #send_form{
+            display: flex;
+            align-items: center;
+        }
+        .chat-input-field {
+            border: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            width: 210px;
+        }
+        .chat-input-sender {
+            border: none;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 5px; /* 與訊息內容的距離 */
+            width: 55px;
+            height: 40px;
+        }
+        .chat-upload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            width: 20px;
+        }
+        .loading-message {
+            align-self: flex-start; /* 將assistant訊息移動到左邊 */
+            background-color: #f4f4f4;
+            text-align: left;
+            margin-left: 5px; /* 與左邊界的距離 */
+            font-size: 15px;
+            font-weight: bold;
+            display: inline-block;
+            animation: bounce 0.6s infinite alternate;
+        }
+        #chat_file {
+            display: none;
+        }
+        #chat_file_label {
+            cursor: pointer;
+        }
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-icon" id="chatIcon">💬</div>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-sidebar" id="chatSidebar">
+            {% for chat in record %}
+                <div class="chat-sidebar-item" id="{{chat[0]}}" onclick="load_chat(this.id)">{{chat[1]}}</div>
+            {% endfor %}
+            <div class="new-chat" id="new-chat" onclick="create_chat()">
+                新增聊天
+            </div>
+        </div>
+        <div class="chat-content">
+            <div class="chat-messages-div" id="chatMessagesDiv">
+                <div class="chat-messages" id="chatMessages"></div>
+            </div>
+            <div class="chat-input">
+                <form id="send_form">
+                    <div class="chat-upload">
+                        <label for="chat_file" id="chat_file_label">📎</label>
+                        <input type="file" id="chat_file" accept=".txt, .pdf">
+                    </div>
+                    <textarea class="chat-input-field" placeholder="Type a message..." id="query"></textarea>
+                    &nbsp;
+                    <input id="chatSendButton" class="chat-input-sender" type="submit" value="Send"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/lib/marked.umd.min.js"></script>
+    <script>
+        var chat_id = "new_chat";
+        var lock = false; // 傳送訊息中無法新增聊天、切換聊天室、重複傳送訊息
+        var file_lock = false; // 上傳檔案 lock
+        document.getElementById('chatIcon').addEventListener('click', function() {
+            var chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+        });
+        function load_chat(load_chat_id) { // 讀取聊天紀錄
+            if (lock == false) {
+                chat_id = load_chat_id;
+                fetch('http://192.168.28.226:5001/load_chat', {
+                // fetch('https://33b9-101-9-133-94.ngrok-free.app/load_chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({chat_id: chat_id})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.result);
+                    chat_messages = document.getElementById('chatMessages');
+                    chat_messages.innerHTML = '';
+                    data.result.forEach(message => {
+                        if (message.role == 'file') {
+                            console.log('file');
+                            addUploadFileMessage(message.content);
+                        } else {
+                            messageDiv = document.createElement('div');
+                            messageDiv.className = message.role; // 設置 class 為 'user' 或 'assistant'
+                            messageDiv.textContent = message.content; // 設置訊息內容
+                            chat_messages.appendChild(messageDiv); // 將新元素加入 chatMessages
+                        }
+                    });
+                    scrollToBottom();
+                })
+            }
+        }
+        function scrollToBottom() {
+            chatMessagesDiv = document.getElementById("chatMessagesDiv");
+            chatMessagesDiv.scrollTop = chat_messages.scrollHeight;
+        }
+        document.getElementById("send_form").addEventListener('submit',function(event) { // 送出訊息
+            event.preventDefault();
+            if (lock == false) {
+                // 顯示使用者問題於聊天室
+                query = document.getElementById('query').value;
+                document.getElementById('query').value = "";
+                chat_messages = document.getElementById('chatMessages');
+                messageDiv = document.createElement('div');
+                messageDiv.className = "user";
+                messageDiv.textContent = query; // 設置訊息內容
+                chat_messages.appendChild(messageDiv); // 將新元素加入 chatMessages
+                lock = true;
+                // 顯示等待動畫
+                loading_message = document.createElement('div');
+                loading_message.className = "loading-message";
+                loading_message.id = "loading_message";
+                chat_messages.appendChild(loading_message);
+                loading_message = document.getElementById('loading_message')
+                loading_message.textContent = "•••";
+                loading_message.style.display = 'inline-block';
+                // 畫面移至最下面
+                scrollToBottom();
+                // 傳送訊息
+                var formData = new FormData();
+                formData.append('query', query);
+                formData.append('chat_id', chat_id);
+                formData.append('user', 'kenny');
+                formData.append('user_id', 1);
+                // 是否有上傳檔案
+                var fileInput = document.getElementById('chat_file');
+                var file = fileInput.files[0];
+                if (file) {
+                    formData.append('file', file);
+                }
+                fetch('http://192.168.28.226:5001/chat', {
+                // fetch('https://33b9-101-9-133-94.ngrok-free.app/chat', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 清空檔案輸入欄
+                    fileInput.value = '';
+                    // 關閉等待動畫
+                    loading_message.remove();
+                    lock = false;
+                    messageDiv = document.createElement('div');
+                    messageDiv.className = "assistant";
+                    messageDiv.textContent = data.result; // 設置訊息內容
+                    chat_messages.appendChild(messageDiv); // 將新元素加入 chatMessages
+                    if ('chat_name' in data) { // 新聊天會回傳聊天室名稱
+                        chat_sidebar = document.getElementById('chatSidebar');
+                        new_chat = document.getElementById("new-chat");
+                        if (new_chat) {
+                            chat_sidebar.removeChild(new_chat);
+                        }
+                        chat = document.createElement("div");
+                        chat_id = data.chat_id;
+                        chat.id = chat_id;
+                        chat.className = "chat-sidebar-item"
+                        title = data.chat_name;
+                        if (title.length >15) {
+                            title = title.substring(0,12);
+                            title += "..."
+                        }
+                        chat.textContent = title;
+                        chat.setAttribute("onclick", "load_chat(this.id)");
+                        chat_sidebar.insertBefore(chat, chat_sidebar.firstChild);
+
+                        new_chat = document.createElement("div");
+                        new_chat.id = "new-chat";
+                        new_chat.className = "new-chat"
+                        new_chat.textContent = "新增聊天";
+                        chat_sidebar.appendChild(new_chat);
+                        new_chat.setAttribute("onclick", "create_chat()");
+                    }
+                    scrollToBottom();
+                })
+                .catch(error => {
+                    console.error('Error generating text:', error);
+                });
+            }
+        });
+        function create_chat() { // 新增聊天
+            if (lock == false) {
+                chat_messages = document.getElementById('chatMessages');
+                chat_messages.innerHTML = '';
+                chat_id = "new_chat";
+                uploadFileMessage = document.querySelectorAll('.upload-file-message');
+                uploadFileMessage.forEach(element => {
+                    element.remove();
+                });
+                file_lock = false;
+            }
+        }
+        document.getElementById('chat_file').addEventListener('change', function(event) { // 上傳檔案
+            if (file_lock == false) {
+                file_lock = true;
+                var file = event.target.files[0];
+                file_name = file.name;
+                addUploadFileMessage(file_name);
+                scrollToBottom();
+            }
+        });
+        function addUploadFileMessage(file_name) { // 新增檔案訊息
+            // 外層 div
+            let uploadFileMessage = document.createElement('div');
+            uploadFileMessage.className = 'upload-file-message';
+            uploadFileMessage.id = 'uploadFileMessage'+file_name;
+            uploadFileMessage.title = file_name;
+
+            // upload-file-icon div
+            let uploadFileIcon = document.createElement('div');
+            uploadFileIcon.className = 'upload-file-icon';
+            uploadFileIcon.id = 'uploadFileIcon'+file_name;
+            uploadFileMessage.appendChild(uploadFileIcon);
+
+            // 添加空格
+            let space = document.createTextNode('\u00A0');
+            uploadFileMessage.appendChild(space);
+
+            // upload-file-name div
+            let uploadFileName = document.createElement('div');
+            uploadFileName.className = 'upload-file-name';
+            uploadFileName.id = 'uploadFileName'+file_name;
+            uploadFileMessage.appendChild(uploadFileName);
+
+            // 加到 chat message
+            document.getElementById('chatMessages').appendChild(uploadFileMessage);
+            
+            // 顯示
+            document.getElementById('uploadFileMessage'+file_name).style.display = 'flex';
+            
+            // 縮短檔名
+            if (file_name.length > 11) {
+                file_short_name = file_name.substring(0,6)
+                lastDot = file_name.lastIndexOf('.');
+                file_type = "";
+                if (lastDot != -1) {
+                    file_type =  file_name.substring(lastDot);
+                }
+                file_new_name = file_short_name+"... "+file_type;
+                document.getElementById('uploadFileName'+file_name).textContent = file_new_name;
+                document.getElementById('uploadFileIcon'+file_name).textContent = "File";
+            } else {
+                document.getElementById('uploadFileName'+file_name).textContent = file_name;
+                document.getElementById('uploadFileIcon'+file_name).textContent = "File";
+            }
+        }
+
+    </script>
+</body>
+</html>
