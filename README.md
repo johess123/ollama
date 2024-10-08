@@ -25,11 +25,13 @@
    - 由於 Ollama 提供 Python SDK，透過 Flask 快速建立可與 LLM 交互的系統。
 
  <h2>使用方法</h2>
+ 
  - 安裝 Ollama
  - 透過 Ollama 下載 LLM Model
  - 部署 Flask, MySQL, ChromaDB
  - 在要嵌入聊天機器人的網頁前端，透過 JavaScript 嵌入聊天機器人。
 
  <h2>未來展望</h2>
+ 
  - 透過 docker 打包整個架構，方便使用者快速部署。
  - 提升聊天機器人產生的回覆的精準度。
