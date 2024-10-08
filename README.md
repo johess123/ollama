@@ -20,3 +20,12 @@
    - ChromaDB
      - 向量資料庫，儲存 RAG 處理後的資料。
    - LangChain 搭配 ChromaDB 實作 RAG，可實現打造個人機器人的功能。
+ - Flask
+   - Python 的網頁後端框架
+   - 由於 Ollama 提供 Python SDK，透過 Flask 快速建立可與 LLM 交互的系統。
+
+ <h2>使用方法</h2>
+ 1. 安裝 Ollama
+ 2. 透過 Ollama 下載 LLM Model
+ 3. 部署 Flask, MySQL, ChromaDB
+ 4. 在要嵌入聊天機器人的網頁前端，透過 JavaScript 嵌入聊天機器人。
